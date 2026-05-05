@@ -466,13 +466,10 @@ elif page == "📊 Data Explorer":
         st.pyplot(fig)
         plt.close()
 
-        st.markdown(
-            '<div class="insight-box">'
-            "<strong>Key Insight:</strong> The numerical features show low multicollinearity, "
+        st.info(
+            "**Key Insight:** The numerical features show low multicollinearity, "
             "meaning each variable contributes independent information to the model. "
             "This is favorable for training reliable classifiers."
-            "</div>",
-            unsafe_allow_html=True,
         )
 
 
@@ -547,13 +544,10 @@ elif page == "🔬 Model Performance":
     report_df = pd.DataFrame(report).T.round(4)
     st.dataframe(report_df, use_container_width=True)
 
-    st.markdown(
-        '<div class="insight-box">'
-        "<strong>Technical Note:</strong> Tree-based models (Decision Tree, Random Forest) were trained "
+    st.info(
+        "**Technical Note:** Tree-based models (Decision Tree, Random Forest) were trained "
         "on unscaled data, while KNN used StandardScaler-transformed features since it is "
         "distance-based. The scaler was fitted only on training data to prevent data leakage."
-        "</div>",
-        unsafe_allow_html=True,
     )
 
 
@@ -739,34 +733,28 @@ elif page == "📈 Feature Importance":
     st.markdown("---")
     st.markdown("### Answering the Research Questions")
 
-    st.markdown(
-        '<div class="insight-box">'
-        "<strong>RQ1: Which soil and environmental variables influence fertilizer recommendation?</strong><br>"
+    st.info(
+        "**RQ1: Which soil and environmental variables influence fertilizer recommendation?**\n\n"
         "The feature importance analysis shows that virtually all input variables contribute "
         "to the recommendation. Nutrient levels (N, P, K), soil properties (pH, moisture, organic carbon), "
         "and crop-related variables consistently rank among the most influential features."
-        "</div>",
-        unsafe_allow_html=True,
     )
-    st.markdown(
-        '<div class="insight-box">'
-        "<strong>RQ2: Can machine learning models accurately predict the optimal fertilizer?</strong><br>"
-        "Yes. All three models achieved meaningful predictive performance. The best model "
-        f"({max(model_results, key=lambda k: model_results[k]['f1'])}) achieved an F1-Score of "
-        f"{max(r['f1'] for r in model_results.values()):.4f}, demonstrating that machine learning "
+
+    best_model_rq = max(model_results, key=lambda k: model_results[k]["f1"])
+    best_f1_rq = max(r["f1"] for r in model_results.values())
+    st.info(
+        "**RQ2: Can machine learning models accurately predict the optimal fertilizer?**\n\n"
+        f"Yes. All three models achieved meaningful predictive performance. The best model "
+        f"({best_model_rq}) achieved an F1-Score of {best_f1_rq:.4f}, demonstrating that machine learning "
         "can effectively capture the complex relationships in agricultural data."
-        "</div>",
-        unsafe_allow_html=True,
     )
-    st.markdown(
-        '<div class="insight-box">'
-        "<strong>RQ3: Which features are the most important drivers?</strong><br>"
-        "The top 5 most important features according to the Random Forest model are: "
-        + ", ".join(f"**{row['Feature']}** ({row['Importance']:.3f})" for _, row in feat_imp.head(5).iterrows())
-        + ". These align with agronomic knowledge — fertilizer choice is driven by what the soil "
+
+    top5_str = ", ".join(f"**{row['Feature']}** ({row['Importance']:.3f})" for _, row in feat_imp.head(5).iterrows())
+    st.info(
+        "**RQ3: Which features are the most important drivers?**\n\n"
+        f"The top 5 most important features according to the Random Forest model are: "
+        f"{top5_str}. These align with agronomic knowledge — fertilizer choice is driven by what the soil "
         "contains, what the plant needs, and the environmental context."
-        "</div>",
-        unsafe_allow_html=True,
     )
 
 
